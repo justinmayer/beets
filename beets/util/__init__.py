@@ -440,17 +440,23 @@ def samefile(p1, p2):
     return shutil._samefile(syspath(p1), syspath(p2))
 
 
-def remove(path, soft=True):
-    """Remove the file. If `soft`, then no error will be raised if the
-    file does not exist.
+def remove(path, soft=True, trash=True):
+    """Move file to trash if `trash` executable is on $PATH. Otherwise, delete
+    the file. If `soft`, then no error will be raised if the file does not exist.
     """
     path = syspath(path)
     if soft and not os.path.exists(path):
         return
-    try:
-        os.remove(path)
-    except (OSError, IOError) as exc:
-        raise FilesystemError(exc, 'delete', (path,), traceback.format_exc())
+    if trash and shutil.which("trash") is not None:
+        try:
+            trash = command_output(["trash", path])
+        except (ValueError, OSError, subprocess.CalledProcessError) as exc:
+            raise FilesystemError(exc, 'trash', (path,), traceback.format_exc())
+    else:
+        try:
+            os.remove(path)
+        except (OSError, IOError) as exc:
+            raise FilesystemError(exc, 'delete', (path,), traceback.format_exc())
 
 
 def copy(path, dest, replace=False):
