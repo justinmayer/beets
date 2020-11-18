@@ -181,6 +181,25 @@ here, including the directory and file naming scheme. See
 
 .. _YAML: https://yaml.org/
 
+Backups
+-------
+
+All software contains bugs, so backing up your music and its database is always
+prudent practice. Make sure your backup software backs up the file paths listed
+in the ``directory:`` and ``library:`` configuration settings mentioned above,
+preferably in an incremental fashion, both on-site and off-site. Your music is
+important to you, so be sure to treat it accordingly.
+
+That said, Beets takes great care to avoid data loss whenever possible.
+For example, if you have a ``trash`` executable on your ``$PATH``, it will be
+used instead of regular delete operations in order to provide a safer user
+experience. There are multiple ways to install a ``trash`` command, but one
+cross-platform NPM-based tool is called Trash_ and can be installed via::
+
+   npm install --global trash-cli
+
+.. _Trash: https://github.com/sindresorhus/trash#cli
+
 Importing Your Library
 ----------------------
 
